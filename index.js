@@ -58,7 +58,7 @@ function getWinners(data, callback) {
    let winners = getFinals(data).map(function(callback){
     if(callback["Home Team Goals"] > callback["Away Team Goals"]){
         return callback["Home Team Name"];
-    } else if(callback["Home Team Goals"] < callback["Away Team Goals"]){
+    } else {
         return callback["Away Team Name"];
     }
    });
@@ -79,10 +79,10 @@ hint: the strings returned need to exactly match the string in step 4.
  */
 
 function getWinnersByYear(data,callbackYears,callbackWinners) {
-   let worldCup = getWinners(data).map(function(callbackYears, callbackWinners){
-    return `In ${callbackYears}, ${callbackWinners} won the world cup!`;
+   let winners = callbackWinners(data).map(function(item,index){
+       return `In ${callbackYears(data)[index]}, ${item} won the world cup!`;
    });
-   return worldCup;
+   return winners;
 }
 console.log(getWinnersByYear(fifaData, getYears, getWinners));
 
@@ -96,8 +96,9 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(callback) {
+    let average = callback.reduce((counter, item) => counter + (item[ "Home Team Goals" ] + item[ "Away Team Goals" ]), 0 ) / callback.length;
+    return average.toPrecision(3);
 }
 
 
